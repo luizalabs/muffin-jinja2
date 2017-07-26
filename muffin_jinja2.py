@@ -26,6 +26,7 @@ class Plugin(BasePlugin):
         loader=None,
         encoding='utf-8',
         template_folders=('templates',),
+        enable_async=False,
     )
 
     def __init__(self, app=None, **options):
@@ -55,6 +56,7 @@ class Plugin(BasePlugin):
             cache_size=self.cfg.cache_size,
             extensions=self.cfg.extensions,
             loader=self.cfg.loader,
+            enable_async=self.cfg.enable_async,
         )
 
         @self.register
