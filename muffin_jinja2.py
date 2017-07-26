@@ -133,6 +133,22 @@ class Plugin(BasePlugin):
 
         return template.render(**ctx)
 
+    @asyncio.coroutine
+    def render_async(self, path, **context):
+        """ Render a template with context. """
+        template = self.env.get_template(path)
+
+        ctx = dict()
+        for provider in self.providers:
+            ctx_ = yield from provider()
+            ctx.update(ctx_)
+        ctx.update(context)
+
+        for reciever in self.receivers:
+            reciever(path, ctx)
+
+        return template.render_async(**ctx)
+
 
 class FileSystemLoader(jinja2.FileSystemLoader):
 
