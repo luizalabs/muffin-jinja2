@@ -117,7 +117,7 @@ class Plugin(BasePlugin):
 
         return wrapper
 
-    def update_receivers(self, context):
+    def update_receivers(self, path, context):
         for receivers in self.receivers:
             receivers(path, context)
 
@@ -139,7 +139,7 @@ class Plugin(BasePlugin):
         """ Render a template with context. """
         template = self.env.get_template(path)
         updated_context = yield from self.get_updated_context(context)
-        self.update_receivers(updated_context)
+        self.update_receivers(path, updated_context)
 
         return template.render(**updated_context)
 
@@ -148,7 +148,7 @@ class Plugin(BasePlugin):
         """ Async render a template with context. """
         template = self.env.get_template(path)
         updated_context = yield from self.get_updated_context(context)
-        self.update_receivers(updated_context)
+        self.update_receivers(path, updated_context)
 
         return (yield from template.render_async(**updated_context))
 
